@@ -6,8 +6,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>
-		<%= title %> 부트스트랩 101 템플릿</title>
+
 
 	<!-- 부트스트랩 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -189,9 +188,24 @@ function cancelPayFunc() {
 						data: JSON.stringify(cancelPayRequestData),
 						contentType : "application/json",
             success: function (data) {
-							alert(data.responseMessage)
+							alert(data.responseMessage);
+						  let html ="";
 							console.log(data.data);
-							location.reload();
+							let cancelPayData=data.data;
+							html +='<div class "form-card">';
+							html +='	<form>';
+							html +=' <h2 id="heading2" class="text-danger" >SUCCESS</h2><br>'
+							html +='<label class="pay"> PayId</label>';
+							html += `<input type="text"   class="form-control" value="${ cancelPayData.payId }" readonly/> <br />`
+							html +='<label class="pay"> OriPayId (원 결제 관리 번호)</label>';
+							html += `<input type="text"   class="form-control" value="${ cancelPayData.oriPayId }" readonly/> <br />`
+							html +='<label class="pay"> OriPrice</label>';
+							html += `<input type="text"   class="form-control" value="${ cancelPayData.oriPrice }" readonly/> <br />`
+							html +='<label class="pay"> OriVat</label>';
+							html += `<input type="text"   class="form-control" value="${ cancelPayData.oriVat }" readonly/> <br />`
+							html += '</form>';
+							html += '</div>';
+							$('#addHtml').html(html);
 
 
             },
@@ -219,21 +233,24 @@ function cancelPayFunc() {
                         <div class="card rounded-0 border-0 card2" id="paypage">
                             <div class="form-card">
                             <form name="cancelPayForm" id="cancelPayForm" onsubmit="return cancelPayFunc()">
-                                <h2 id="heading2" class="text-danger">Cancel Payment</h2><br>
+                                <!-- <h2 id="heading2" class="text-danger">Cancel Payment</h2><br> -->
 
                                     <!-- <div class='radio' data-value="credit"><img src="https://i.imgur.com/28akQFX.jpg" width="200px" height="60px"></div>
                                     <div class='radio' data-value="paypal"><img src="https://i.imgur.com/5QFsx7K.jpg" width="200px" height="60px"></div> <br> -->
-                                <label class="pay">Pay Id</label> 	<input type="text" id="cancelPayId" name="cancelPayId" placeholder="원 거래번호" class="form-control" required>
+                                <label class="pay">Pay Id</label> 	<input type="text" id="cancelPayId" name="cancelPayId" placeholder="원 결제 번호를 입력해주세요." class="form-control" required>
 
-                                  <label class="pay">Price</label><input type="number" id="cancelPrice" placeholder="취소 금액" class="form-control"  required>
+                                  <label class="pay">Price</label><input type="number" id="cancelPrice" placeholder="취소할 금액을 입력해주세요." class="form-control"  required>
 
-                                  <label class="pay">VAT</label><input type="number" id="cancelVat" placeholder="취소 부가세" class="form-control">
+                                  <label class="pay">VAT</label><input type="number" id="cancelVat" placeholder="입력하지 않을 시 자동 계산 처리 됩니다." class="form-control">
 
 																	<div class="row">
-																			<div class="col-md-6"> <input type="submit" value="MAKE A PAYMENT &nbsp; &#xf178;" class="btn btn-info placeicon"> </div>
+																			<div class="col-md-6"> <input type="submit" value="CANCEL PAYMENT " class="btn btn-info placeicon"> </div>
 																	</div>
                                 </form>
 															</div>
+															<div id="addHtml">
+															</div>
+
                             </div>
                         </div>
                     </div>

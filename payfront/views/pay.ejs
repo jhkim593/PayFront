@@ -13,10 +13,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 
-
-
-
-
  <style>
   * {
     margin: 0;
@@ -169,42 +165,35 @@ body {
 </style>
 
 <script>
-
-
-function getPayFunc() {
-
-	   var payId=$("#payId").val();
+function payfunc() {
+	var payRequestData={
+		"cardNum":$("#cardNum").val(),
+		"expirationDate":$("#expirationDate").val(),
+		"cvc":$("#cvc").val(),
+		"installmentMonth": $("#installmentMonth").val(),
+		"price":$("#price").val(),
+		"vat":$("#vat").val()
+	}
         $.ajax({
-            url: "http://localhost:8080/pay/"+payId,
-            type: 'GET',
-						dataType: "JSON",
+            url: "http://localhost:8080/pay",
+            type: 'POST',
+            data: JSON.stringify(payRequestData),
+						contentType : "application/json",
             success: function (data) {
-							let payData= data.data;
-							let cardInfo=payData.cardInfo;
-							let priceInfo=payData.priceInfo;
-							let html="";
-							html +='<div class "form-card">';
-							html +='	<form>';
-							html +=' <h2 id="heading2" class="text-success" >SUCCESS</h2><br>'
-							html +='<label class="pay"> PayId</label>';
-							html += `<input type="text"   class="form-control" value="${ payData.payId }" readonly/> <br />`
-							html +='<label class="pay"> Type</label>';
-							html += `<input type="text"   class="form-control" value="${ payData.type }" readonly/> <br />`
-							html +='<label class="pay"> cardNum</label>';
-							html += `<input type="text"   class="form-control" value="${ cardInfo.cardNum }" readonly/> <br />`
-							html +='<label class="pay"> ExpirationDate</label>';
-							html += `<input type="text"   class="form-control" value="${ cardInfo.expirationDate }" readonly/> <br />`
-							html +='<label class="pay"> CVC</label>';
-							html += `<input type="text"   class="form-control" value="${ cardInfo.cvc } " readonly/> <br />`
-							html +='<label class="pay"> Price</label>';
-							html += `<input type="text"  class="form-control" value="${ priceInfo.price }" readonly/> <br />`
-							html +='<label class="pay"> VAT</label>';
-							html += `<input type="text"  class="form-control" value="${ priceInfo.vat }" readonly/> <br />`
-							html += '</form>';
-							html += '</div>';
-							$('#addHtml').html(html);
-							  console.log(data.data);
-							  alert(data.responseMessage);
+							alert(data.responseMessage);
+
+							let html ="";
+						 console.log(data);
+						 let payData=data.data;
+						 html +='<div class "form-card">';
+						 html +='	<form>';
+						 html +=' <h2 id="heading2" class="text-success" >SUCCESS</h2><br>'
+						 html +='<label class="pay"> PayId</label>';
+						 html += `<input type="text"   class="form-control" value="${ data.data }" readonly/> <br />`
+
+						 html += '</form>';
+						 html += '</div>';
+						 $('#addHtml').html(html);
 
             },
             error: function (xhr, status) {
@@ -213,13 +202,8 @@ function getPayFunc() {
             }
         });
       return false;
-
-
 }
-// <input type="button" id ="gg" value="gg"onclick="openPop()"/>
-// function openPop(){
-//     var popup = window.open('http://www.naver.com', '네이버팝업', 'width=700px,height=800px,scrollbars=yes');
-// }
+
 
 </script>
 
@@ -230,33 +214,44 @@ function getPayFunc() {
         <div class="col-12 col-lg-11">
             <div class="card card0 rounded-0">
                 <div class="row">
+
                     <div class="col-md-7 col-sm-12 p-0 box">
                         <div class="card rounded-0 border-0 card2" id="paypage">
                             <div class="form-card">
-                            <form name="getPayForm" id="cancelPayForm" onsubmit="return getPayFunc()">
-                                <!-- <h2 id="heading2" class="text-danger">Get Payment </h2><br> -->
+                              <form name="payForm" id="payForm" onsubmit="return payfunc()">
+                                <!-- <h2 id="heading2" class="text-danger">Payment</h2><br> -->
 
-                                    <!-- <div class='radio' data-value="credit"><img src="https://i.imgur.com/28akQFX.jpg" width="200px" height="60px"></div>
-                                    <div class='radio' data-value="paypal"><img src="https://i.imgur.com/5QFsx7K.jpg" width="200px" height="60px"></div> <br> -->
-                                <label class="pay">PayId</label> 	<input type="text" id="payId" name="payId" placeholder="원 결제번호를 입력해주세요." class="form-control" required>
+                                    <div class='radio' data-value="credit"><img src="https://i.imgur.com/28akQFX.jpg" width="200px" height="60px"></div>
+                                    <div class='radio' data-value="paypal"><img src="https://i.imgur.com/5QFsx7K.jpg" width="200px" height="60px"></div> <br>
+                                <label class="pay">Name on Card</label> <input type="text" id="cardNum" placeholder="10~16자리 숫자를 입력해주세요." class="form-control" pattern="[0-9]{10,16}" required>
 
+                                <div class="row">
+                                    <div class="col-8 col-md-6"> <label class="pay">InstallmentMonth</label> <input type="number" id="installmentMonth" placeholder="0~12 숫자를 입력해주세요." class="form-control" min="0" max="12" required>
+ </div>
+                                    <div class="col-4 col-md-6"> <label class="pay">CVC</label> <input type="text" id="cvc" placeholder="3자리 숫자를 입력해주세요." class="form-control" pattern="[0-9]{3}" required>
+ </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12"> <label class="pay">Expiration Date</label> </div>
+                                    <div class="col-md-12"> <input type="text" id="expirationDate" placeholder="4자리 숫자를 MMYY 형식으로 입력해주세요." class="form-control" pattern="[0-9]{4}" required> </div>
+                                </div>
+                                  <label class="pay">Price</label> <input type="number" id="price" placeholder="100원 이상 , 10억원 이하 숫자를 입력해주세요." class="form-control" min="100" max="1000000000" required>
 
-																	<div class="row">
-																			<div class="col-md-6"> <input type="submit" value="SEARCH " class="btn btn-info placeicon"> </div>
-																	</div>
+                                  <label class="pay">VAT</label><input type="text" id="vat" placeholder="입력하지 않을 시 자동 계산 처리 됩니다." class="form-control">
+
+                                <div class="row">
+                                    <div class="col-md-6"> <input type="submit" value="MAKE A PAYMENT" class="btn btn-info placeicon">  </div>
+                                </div>
                                 </form>
-															</div>
-
-
-																<div id="addHtml">
-																</div>
                             </div>
+														<div id="addHtml">
+														</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 </body>
 </html>

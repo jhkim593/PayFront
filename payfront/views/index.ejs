@@ -7,238 +7,95 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>
-		<%= title %> 부트스트랩 101 템플릿</title>
+		</title>
 
 	<!-- 부트스트랩 -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-
- <style>
-  * {
-    margin: 0;
-    padding: 0
-}
-
-html {
-    height: 100%
-}
-
-body {
-    background-color: #ffffff
-}
-
-.card0 {
-    margin: 40px 12px 15px 12px;
-    border: 0
-}
-
-.card1 {
-    margin: 0;
-    padding: 15px;
-    padding-top: 25px;
-    padding-bottom: 0px;
-    background: #263238;
-    height: 100%
-}
-
-.bill-head {
-    color: #ffffff;
-    font-weight: bold;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    font-size: 30px
-}
-
-.line {
-    border-right: 1px grey solid
-}
-
-.bill-date {
-    color: #BDBDBD
-}
-
-.red-bg {
-    margin-top: 25px;
-    margin-left: 0px;
-    margin-right: 0px;
-    background-color: #F44336;
-    padding-left: 20px !important;
-    padding: 25px 10px 25px 15px
-}
-
-#total {
-    margin-top: 0px;
-    padding-left: 7px
-}
-
-#total-label {
-    margin-bottom: 0px;
-    color: #f0f8ff;
-    padding-left: 7px
-}
-
-#heading1 {
-    color: #ffffff;
-    font-size: 20px;
-    padding-left: 10px
-}
-
-#heading2 {
-    font-size: 27px;
-    color: #D50000
-}
-
-.placeicon {
-    font-family: fontawesome !important
-}
-
-.card2 {
-    padding: 25px;
-    margin: 0;
-    height: 100%
-}
-
-.form-card .pay {
-    font-weight: bold
-}
-
-.form-card input,
-.form-card textarea {
-    padding: 10px 8px 10px 8px;
-    border: none;
-    border: 1px solid lightgrey;
-    border-radius: 0px;
-    margin-bottom: 25px;
-    margin-top: 2px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: montserrat;
-    color: #2C3E50;
-    font-size: 14px;
-    letter-spacing: 1px
-}
-
-.form-card input:focus,
-.form-card textarea:focus {
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    border: none;
-    font-weight: bold;
-    border: 1px solid gray;
-    outline-width: 0
-}
-
-.btn-info {
-    color: #ffffff !important
-}
-
-.radio-group {
-    position: relative;
-    margin-bottom: 25px
-}
-
-.radio {
-    display: inline-block;
-    width: 204;
-    height: 64;
-    border-radius: 0;
-    background: lightblue;
-    box-sizing: border-box;
-    border: 2px solid lightgrey;
-    cursor: pointer;
-    margin: 8px 25px 8px 0px
-}
-
-.radio:hover {
-    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.2)
-}
-
-.radio.selected {
-    box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.4)
-}
-
-.fit-image {
-    width: 100%;
-    object-fit: cover
-}
-</style>
-
-<script>
-function payfunc() {
-	var payRequestData={
-		"cardNum":$("#cardNum").val(),
-		"expirationDate":$("#expirationDate").val(),
-		"cvc":$("#cvc").val(),
-		"installmentMonth": $("#installmentMonth").val(),
-		"price":$("#price").val(),
-		"vat":$("#vat").val()
+	<script>
+	function openPayPop(){
+	    var popup = window.open('/pay', '결제','width=700px,height=900px,scrollbars=yes');
 	}
-        $.ajax({
-            url: "http://localhost:8080/pay",
-            type: 'POST',
-            data: JSON.stringify(payRequestData),
-						contentType : "application/json",
-            success: function (data) {
-							alert(data.responseMessage);
-                location.reload();
 
-            },
-            error: function (xhr, status) {
-							alert(xhr.responseJSON.responseMessage);
-							location.reload();
-            }
-        });
-      return false;
-}
+	function openCancelPayPop(){
+			var popup = window.open('/cancelPay', '결제','width=700px,height=800px,scrollbars=yes');
+	}
 
-
-</script>
-
+	function openGetPayPop(){
+			var popup = window.open('/getPay', '결제','width=700px,height=800px,scrollbars=yes');
+	}
+	</script>
 </head>
+
 <body>
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-12 col-lg-11">
-            <div class="card card0 rounded-0">
-                <div class="row">
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+					<a class="navbar-brand" href="#" >PAYMENT</a>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
 
-                    <div class="col-md-7 col-sm-12 p-0 box">
-                        <div class="card rounded-0 border-0 card2" id="paypage">
-                            <div class="form-card">
-                              <form name="payForm" id="payForm" onsubmit="return payfunc()">
-                                <h2 id="heading2" class="text-danger">Payment</h2><br>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<!-- <form class="navbar-form navbar-right">
+					<div class="form-group">
+						<input type="text" placeholder="Email" class="form-control">
+					</div>
+					<div class="form-group">
+						<input type="password" placeholder="Password" class="form-control">
+					</div>
+					<button type="submit" class="btn btn-success">Sign in</button>
+				</form> -->
+			</div>
+			<!--/.navbar-collapse -->
+		</div>
+	</nav>
 
-                                    <div class='radio' data-value="credit"><img src="https://i.imgur.com/28akQFX.jpg" width="200px" height="60px"></div>
-                                    <div class='radio' data-value="paypal"><img src="https://i.imgur.com/5QFsx7K.jpg" width="200px" height="60px"></div> <br>
-                                <label class="pay">Name on Card</label> <input type="text" id="cardNum" placeholder="카드번호" class="form-control" pattern="[0-9]{10,16}" required>
+	<!-- Main jumbotron for a primary marketing message or call to action -->
+	<div class="jumbotron">
+		<div class="container">
+			<!-- <h1>Hello, world!</h1>
+			<p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p> -->
 
-                                <div class="row">
-                                    <div class="col-8 col-md-6"> <label class="pay">InstallmentMonth</label> <input type="number" id="installmentMonth" placeholder="할부개월수" class="form-control" min="0" max="12" required>
- </div>
-                                    <div class="col-4 col-md-6"> <label class="pay">CVC</label> <input type="text" id="cvc" placeholder="cvc" class="form-control" pattern="[0-9]{3}" required>
- </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12"> <label class="pay">Expiration Date</label> </div>
-                                    <div class="col-md-12"> <input type="text" id="expirationDate" placeholder="유효기간" class="form-control" pattern="[0-9]{4}" required> </div>
-                                </div>
-                                  <label class="pay">Price</label> <input type="number" id="price" placeholder="결제 금액" class="form-control" min="100" max="1000000000" required>
+	</div>
+	<img src="https://user-images.githubusercontent.com/53510936/139194031-0fdc2b4f-126b-4440-892c-e9fb5b47527c.jpg"  height="600px" width="1150px"style="display : block ;
+	margin : 0 auto ; max-width: 100%; ">
+		</div>
 
-                                  <label class="pay">VAT</label><input type="text" id="vat" placeholder="결제 부가세" class="form-control">
+	<div class="container">
+		<!-- Example row of columns -->
+		<div class="row">
+			<div class="col-md-4">
+				<h2>결제</h2>
+				<p>카드 번호 , 유효 기간 , CVC , 할부 개월수 ,결제 금액 , 부가세를 설정하여 결제 처리 </p>
+				<p><a class="btn btn-default" href="#" role="button" onclick="openPayPop()">Strat &raquo;</a></p>
+			</div>
+			<div class="col-md-4">
+				<h2>결제 취소</h2>
+				<p>결제 관리 번호 , 취소 금액 , 취소 부가세를 설정하여 결제 취소 처리</p>
+				<p><a class="btn btn-default" href="#" role="button" onclick="openCancelPayPop()">Strat &raquo;</a></p>
+			</div>
+			<div class="col-md-4">
+				<h2>결제 정보 조회</h2>
+				<p>결제 관리 번호를 통한 정보 조회</p><br>
+				<p><a class="btn btn-default" href="#" role="button" onclick="openGetPayPop()">Strat &raquo;</a></p>
+			</div>
+		</div>
 
-                                <div class="row">
-                                    <div class="col-md-6"> <input type="submit" value="MAKE A PAYMENT" class="btn btn-info placeicon"> </div>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+		<hr>
+
+		<footer>
+
+		</footer>
+	</div>
+	<!-- /container -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
